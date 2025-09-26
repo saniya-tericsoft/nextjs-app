@@ -5,7 +5,21 @@ export async function middleware(request: NextRequest) {
   const { supabase, response } = createClient(request)
 
   // Refresh session if expired - required for Server Components
-  await supabase.auth.getUser()
+  const { data: { user } } = await supabase.auth.getUser()
+
+  // Define public routes that don't require authentication
+  const publicRoutes = ['/', '/login', '/error']
+  const isPublicRoute = publicRoutes.includes(request.nextUrl.pathname)
+
+  // If user is not authenticated and trying to access protected route
+  if (!user && !isPublicRoute) {
+    return NextResponse.redirect(new URL('/login', request.url))
+  }
+
+  // If user is authenticated and trying to access login page, redirect to dashboard
+  if (user && request.nextUrl.pathname === '/login') {
+    return NextResponse.redirect(new URL('/dashboard', request.url))
+  }
 
   return response
 }
