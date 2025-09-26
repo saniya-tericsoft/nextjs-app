@@ -1,29 +1,47 @@
-import Image from "next/image";
+import { createClient } from '@/utils/supabase/server'
+import { cookies } from 'next/headers'
+import { Database } from '@/types/database'
 
-export default function Home() {
+type Todo = Database['public']['Tables']['todos']['Row']
+
+export default async function Home() {
+  const cookieStore = await cookies()
+  const supabase = createClient(cookieStore)
+
+  const { data: todos } = await supabase.from('todos').select()
+
   return (
     <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Hellooo Worldddddd
-          </li>
-        </ol>
+        <h1 className="text-2xl font-bold">Supabase Todo App</h1>
+        
+        <div className="w-full max-w-md">
+          <h2 className="text-lg font-semibold mb-4">Your Todos:</h2>
+          {todos && todos.length > 0 ? (
+            <ul className="space-y-2">
+              {todos.map((todo: Todo) => (
+                <li key={todo.id} className="p-3 bg-gray-100 dark:bg-gray-800 rounded-lg">
+                  <div className="flex items-center gap-2">
+                    <input 
+                      type="checkbox" 
+                      checked={todo.completed} 
+                      readOnly 
+                      className="w-4 h-4"
+                    />
+                    <span className={todo.completed ? 'line-through text-gray-500' : ''}>
+                      {todo.text}
+                    </span>
+                  </div>
+                  <div className="text-xs text-gray-500 mt-1">
+                    Created: {new Date(todo.created_at).toLocaleDateString()}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-gray-500">No todos found. Create some todos in your Supabase database!</p>
+          )}
+        </div>
 
         <div className="flex gap-4 items-center flex-col sm:flex-row">
           <a
