@@ -1,13 +1,14 @@
 import Link from 'next/link'
 
 interface ErrorPageProps {
-  searchParams: {
+  searchParams: Promise<{
     message?: string
-  }
+  }>
 }
 
-export default function ErrorPage({ searchParams }: ErrorPageProps) {
-  const message = searchParams.message || 'An error occurred'
+export default async function ErrorPage({ searchParams }: ErrorPageProps) {
+  const params = await searchParams
+  const message = params.message || 'An error occurred'
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">

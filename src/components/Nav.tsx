@@ -12,10 +12,6 @@ export default function Nav() {
   const [user, setUser] = useState<{ email?: string } | null>(null)
   const [loading, setLoading] = useState(true)
 
-  // Define routes where navbar should NOT be shown
-  const hideNavbarRoutes = ['/login', '/error']
-  const shouldHideNavbar = hideNavbarRoutes.includes(pathname)
-
   useEffect(() => {
     const supabase = createClient()
     
@@ -35,8 +31,18 @@ export default function Nav() {
     return () => subscription.unsubscribe()
   }, [])
 
-  // Don't render navbar on login/error pages
-  if (shouldHideNavbar) {
+  // Don't render navbar if user is not authenticated
+  if (loading) {
+    return null
+  }
+
+  if (!user) {
+    return null
+  }
+
+  // Don't render navbar on public routes even if user is authenticated
+  const publicRoutes = ['/', '/login', '/error']
+  if (publicRoutes.includes(pathname)) {
     return null
   }
 
@@ -50,6 +56,7 @@ export default function Nav() {
     { href: '/dashboard', label: 'Dashboard', icon: '📊' },
     { href: '/tasks', label: 'Tasks', icon: '✅' },
     { href: '/recipes', label: 'Recipes', icon: '🍳' },
+    { href: '/weather', label: 'Weather', icon: '🌤️' },
     { href: '/scanner', label: 'Scanner', icon: '📱' },
     { href: '/profile', label: 'Profile', icon: '👤' },
   ]
@@ -78,10 +85,10 @@ export default function Nav() {
           <div className="flex items-center">
             <Link href="/" className="flex items-center space-x-2">
               <div className="h-8 w-8 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">T</span>
+                <span className="text-white font-bold text-sm">L</span>
               </div>
               <span className="text-xl font-bold text-gray-900 dark:text-white">
-                TodoApp
+                LifeSync
               </span>
             </Link>
           </div>
