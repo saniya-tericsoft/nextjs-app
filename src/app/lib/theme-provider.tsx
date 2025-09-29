@@ -1,7 +1,7 @@
 'use client'
 
 import { createContext, useContext, useEffect, useState } from 'react'
-import { useTheme } from './store'
+import { useTheme, useSetTheme } from '@/lib/store'
 
 type ThemeProviderProps = {
   children: React.ReactNode
@@ -24,6 +24,7 @@ export function ThemeProvider({
   ...props
 }: ThemeProviderProps) {
   const zustandTheme = useTheme()
+  const setZustandTheme = useSetTheme()
   const [theme, setTheme] = useState(zustandTheme)
 
   // Apply theme to document element and body
@@ -46,7 +47,7 @@ export function ThemeProvider({
   const value = {
     theme,
     setTheme: (theme: string) => {
-      setTheme(theme)
+      setZustandTheme(theme as 'light' | 'dark')
     },
   }
 

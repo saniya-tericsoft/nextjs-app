@@ -1,25 +1,77 @@
 export interface Database {
   public: {
     Tables: {
-      todos: {
+      profiles: {
         Row: {
-          id: number
-          text: string
-          completed: boolean
+          id: string
+          username: string
+          created_at: string
+        }
+        Insert: {
+          id: string
+          username: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          username?: string
+          created_at?: string
+        }
+      }
+      tasks: {
+        Row: {
+          id: string
+          user_id: string
+          title: string
+          description: string | null
+          status: boolean
           created_at: string
           updated_at: string
         }
         Insert: {
-          id?: number
-          text: string
-          completed?: boolean
+          id?: string
+          user_id: string
+          title: string
+          description?: string | null
+          status?: boolean
           created_at?: string
           updated_at?: string
         }
         Update: {
-          id?: number
-          text?: string
-          completed?: boolean
+          id?: string
+          user_id?: string
+          title?: string
+          description?: string | null
+          status?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      recipes: {
+        Row: {
+          id: string
+          user_id: string
+          title: string
+          ingredients: string[]
+          instructions: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          title: string
+          ingredients?: string[]
+          instructions?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          title?: string
+          ingredients?: string[]
+          instructions?: string | null
           created_at?: string
           updated_at?: string
         }

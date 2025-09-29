@@ -14,7 +14,7 @@ interface AppStore {
 // Create the store with persistence
 export const useAppStore = create<AppStore>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       theme: 'light',
       setTheme: (theme) => set({ theme }),
       toggleTheme: () => set((state) => ({ 

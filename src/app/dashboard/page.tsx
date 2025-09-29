@@ -1,4 +1,5 @@
 import { CheckSquare, Utensils, CloudSun, User } from 'lucide-react'
+import Link from 'next/link'
 
 export default function DashboardPage() {
   const features = [
@@ -83,13 +84,13 @@ export default function DashboardPage() {
                 Choose any feature above to begin organizing your life with LifeSync.
               </p>
               <div className="flex flex-wrap justify-center gap-4">
-                <a
+                <Link
                   href="/tasks"
                   className="inline-flex items-center px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-colors duration-200"
                 >
                   <CheckSquare className="h-5 w-5 mr-2" />
                   Start with Tasks
-                </a>
+                </Link>
                 <a
                   href="/recipes"
                   className="inline-flex items-center px-6 py-3 border border-indigo-600 text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 font-medium rounded-lg transition-colors duration-200"
